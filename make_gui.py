@@ -64,7 +64,6 @@ class Application(tk.Frame):
                        "location_b":tk.Canvas(self.master , width=450, height=470, bg='black'  ,bd=0,highlightthickness=0)} # 1054*470
         para_canvas["location_a"].place(x =880,y = 10)
         para_canvas["location_b"].place(x =880,y = 490)
-        
         self.makeleftwindow = MakeleftWindow(para_canvas)
         self.makeleftwindow.make_target_location("location_a")
         self.makeleftwindow.make_target_location("location_b")
@@ -128,6 +127,7 @@ class Application(tk.Frame):
             self.datamiss_label[loc] = tk.Label(self.master, image=self.datamiss,bg="black",borderwidth=0,highlightthickness=0)
             self.datamiss_label[loc].place(x = 1400, y = ypos)
             self.datamiss_flag[loc] = False
+            
     def delete_status(self,loc):
         """実行中の削除
         """
@@ -146,16 +146,11 @@ class Application(tk.Frame):
         for loc in ["location_a", "location_b"]:          
             self.return_data[loc] = self.makegraph.convert_data(loc,self.recevedata[loc].queue)
             self.makegraph.cal_graph(loc)
-            self.makeleftwindow.make_target_location(loc)
-            
-            self.run_status(loc)
-            
+            self.run_status(loc)    
         self.makeleftwindow.push_master(self.return_data)
         self.makegraph.draw()
         
-        
-        
-        self.plot_id  = self.after(100, self.plot_data)
+        self.plot_id  = self.after(200, self.plot_data)
 
     def update_clock(self):
         """時計のupdate

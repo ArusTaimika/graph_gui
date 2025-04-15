@@ -1,4 +1,5 @@
 import matplotlib.patches as patches
+from matplotlib.patches import FancyArrowPatch
 import numpy as np
 from PIL import Image, ImageTk  # 必要
 import tkinter as tk
@@ -25,7 +26,26 @@ class MakeGraph():
         self.setup_tick("location_b")
         
         self.data = [0]*19
-        
+        radius = 335 / 2  # 直径335の半径
+        self.circle = {"location_a":{},"location_b":{}}
+        self.text_patch = {"location_a":{},"location_b":{}}
+        self.point_patch = {"location_a":{},"location_b":{}}
+        self.arrow_patch = {"location_a":{},"location_b":{}}
+        for loc in ["location_a", "location_b"]:
+            for key in ["master", "copy_1", "copy_2"]:
+                self.circle[loc][key] = patches.Circle((0, 0), radius=radius, fill=False, edgecolor=self.robotano[loc][key]["collor"], linewidth=1)
+                self.ax[loc].add_patch(self.circle[loc][key])
+                self.text_patch[loc][key] = self.ax[loc].text(0, 0, self.robotano[loc][key]["name"], color=self.robotano[loc][key]["collor"], fontsize=10)
+                self.point_patch[loc][key], = self.ax[loc].plot(0 , 0, 'o', color = self.robotano[loc][key]["collor"])
+                self.arrow_patch[loc][key] = FancyArrowPatch(
+                    posA=(0, 0),
+                    posB=(radius,0),
+                    arrowstyle="->",
+                    color=self.robotano[loc][key]["collor"],
+                    mutation_scale=15
+                )
+                self.ax[loc].add_patch(self.arrow_patch[loc][key])
+                
     def convert_data(self,location,queue):
         self.flag = False
         max_points = 5
@@ -45,11 +65,11 @@ class MakeGraph():
     
     def cal_graph(self,location):
         if self.flag:
-            self.ax[location].clear()
+            #self.ax[location].clear()
             self.ax[location].grid(linestyle=':',color = (1.0,0.7529,0))
-            self.plot_robotpos(location,self.robotpos[location]["master"],self.data[2], self.robotano[location]["master"])
-            self.plot_robotpos(location,self.robotpos[location]["copy_1"],self.data[8], self.robotano[location]["copy_1"])
-            self.plot_robotpos(location,self.robotpos[location]["copy_2"],self.data[14], self.robotano[location]["copy_2"])
+            self.plot_robotpos(location,"master",self.robotpos[location]["master"],self.data[2], self.robotano[location]["master"])
+            self.plot_robotpos(location,"copy_1" , self.robotpos[location]["copy_1"],self.data[8], self.robotano[location]["copy_1"])
+            self.plot_robotpos(location,"copy_2", self.robotpos[location]["copy_2"],self.data[14], self.robotano[location]["copy_2"])
             self.ax[location].set_title("Data Plot")
             self.ax[location].set_xlim(0, 1100)
             self.ax[location].set_ylim(0, 1100)
@@ -57,17 +77,11 @@ class MakeGraph():
             
             
 
-    def plot_robotpos(self, location,pos, theta,annotate):
-        self.ax[location].plot(pos[:,0] , pos[:,1], 'o', color = annotate["collor"])
-        radius = 335 / 2  # 直径335の半径
-        circle = patches.Circle((pos[-1,0], pos[-1,1]), radius=radius, fill=False, edgecolor=annotate["collor"], linewidth=1)
-        self.ax[location].add_patch(circle)
-        self.ax[location].annotate(annotate["name"],xy=[pos[-1,0], pos[-1,1]],xytext=[pos[-1,0]-60, pos[-1,1]-60], color=annotate["collor"])
-        self.ax[location].annotate("", xy=self.cal_allowend(pos[-1,0],pos[-1,1],theta), xytext=[pos[-1,0], pos[-1,1]],
-            arrowprops=dict(shrink=0, width=1, headwidth=8, 
-                            headlength=10, connectionstyle='arc3',
-                            facecolor='gray', edgecolor='gray')
-        )
+    def plot_robotpos(self, location,key ,pos, theta,annotate):
+        self.point_patch[location][key].set_data(pos[:,0] , pos[:,1])
+        self.circle[location][key].center= (pos[-1,0], pos[-1,1])
+        self.text_patch[location][key].set_position((pos[-1,0], pos[-1,1]))
+        self.arrow_patch[location][key].set_positions((pos[-1,0], pos[-1,1]), self.cal_allowend(pos[-1,0],pos[-1,1],theta))
         
     def cal_allowend(self,pos_x,pos_y, theta):
         radius = 335 / 2
@@ -138,7 +152,6 @@ class MakeleftWindow():
         self.Location_a_text = self.fig_canvas[location].create_text(415, 16, text=targetname, font=("Bahnschrift SemiBold Condensed", 25,), fill="goldenrod2", anchor='nw')
         
     def make_noteobok(self):
-        
         # スタイル設定
         style = ttk.Style()
         style.theme_use("default")  # 安定して色が効くテーマ
@@ -164,6 +177,7 @@ class MakeleftWindow():
                     "copy_2":tk.Frame(self.inner_notebook["location_b"], width=frame_width, height=frame_hight,bg="black",borderwidth=0,highlightthickness=0)}}
         self.inner_canvas = {"location_a":{},"location_b":{}}
         self.makepara = {"location_a":{},"location_b":{}}
+        
         for loc in ["location_a", "location_b"]:
             for key in ["master", "copy_1", "copy_2"]:
                 self.inner_notebook[loc].add(self.inner_frame[loc][key], text=key)
@@ -224,9 +238,8 @@ class MakeParameter():
         self.vel_y_text = self.inner_canvas.create_text(xbasepos, basepos+4*offset, text="", font=("HGSゴシックE", fontsize,), fill="goldenrod2", anchor='nw')
         self.vel_theta_text = self.inner_canvas.create_text(xbasepos, basepos+ 5*offset, text="", font=("HGSゴシックE", fontsize,), fill="goldenrod2", anchor='nw')
         self.count_text = self.inner_canvas.create_text(xbasepos, basepos+ 6*offset, text="", font=("HGSゴシックE", fontsize,), fill="goldenrod2", anchor='nw')
-
-        
         self.data = [0]*19
+
     def make_pos_velo_fig(self,data,key):
         self.data = data
         robot_num = 0

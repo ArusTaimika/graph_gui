@@ -49,8 +49,8 @@ class DigitalClockApp_Text:
     def __init__(self, canvas):
         self.canvas = canvas
         # 背景画像の読み込み
-        self.bg_image = Image.open("image_folder/"+"clock_background.png").resize((525, 235))# パスは必要に応じて調整
-        self.bg_photo = ImageTk.PhotoImage(self.bg_image)
+        bg_image = Image.open("image_folder/"+"clock_background.png").resize((525, 235))# パスは必要に応じて調整
+        self.bg_photo = ImageTk.PhotoImage(bg_image)
         self.canvas.create_image(0, 0, anchor=tk.NW, image=self.bg_photo)
         
         self.time_h_text = self.canvas.create_text(140, 144, text="", font=("HGPゴシックE", 70,), fill="gold2") #Bahanschrift SemiBold Condensed
