@@ -117,7 +117,7 @@ class Application(tk.Frame):
             ypos = 150
         else:
             xpos = 680
-            ypos = 800
+            ypos = 650
         if self.recevedata[loc].timeout_flag and self.status_flag[loc]:
             self.status_image_id[loc] = self.info_canvas.create_image(xpos,70, image = self.loc_status[loc], anchor = 'nw')
             self.delete_datamiss(loc)
