@@ -19,29 +19,29 @@ class CSVLoggerApp:
         self.label = tk.Label(csv_frame, image=self.csv_label,bg="black",borderwidth=0,highlightthickness=0)
         self.label.place(x = 0,y = 0)
         
-        image = Image.open(dir+"csv_entry.png").resize((444, 59))  # 画像ファイルのパス
+        image = Image.open(dir+"csv_entry.png").resize((400, 60))  # 画像ファイルのパス
         self.csv_entry = ImageTk.PhotoImage(image)
         self.entry_label = tk.Label(csv_frame, image=self.csv_entry,bg="black",borderwidth=0,highlightthickness=0)
         self.entry_label.place(x = 0,y = 55)
 
         self.filename_entry = tk.Entry(csv_frame,relief="solid",bg="black",bd=5,font=("Bahnschrift SemiBold Condensed", 15),fg="goldenrod2",insertbackground = "goldenrod2")
-        self.filename_entry.place(x = 158,y = 65,width=280, height=36)
+        self.filename_entry.place(x = 156,y = 66,width=238, height=36)
 
         # 開始ボタン
-        image = Image.open(dir+"save_start.png").resize((156, 175))  # 画像ファイルのパス
+        image = Image.open(dir+"save_start.png").resize((104, 117))  # 画像ファイルのパス
         self.save_start = ImageTk.PhotoImage(image)
         self.start_button = tk.Button(csv_frame, image=self.save_start, command=self.start_saving,borderwidth=0,highlightthickness=0,activebackground="goldenrod2")
-        self.start_button.place(x = 20,y = 115,width=156, height=175)
+        self.start_button.place(x = 0,y = 115,width=104, height=117)
 
         # 停止ボタン
-        image = Image.open(dir+"save_stop.png").resize((156, 175))  # 画像ファイルのパス
+        image = Image.open(dir+"save_stop.png").resize((104, 117))  # 画像ファイルのパス
         self.save_stop = ImageTk.PhotoImage(image)
         self.stop_button = tk.Button(csv_frame, text="保存停止", image=self.save_stop,command=self.stop_saving,borderwidth=0,highlightthickness=0,activebackground="goldenrod2")
-        self.stop_button.place(x = 200,y = 115,width=156, height=175)
+        self.stop_button.place(x = 110,y = 115,width=104, height=117)
 
         
         # 保存中
-        image = Image.open(dir+"save_run.png").resize((180, 270))  # 画像ファイルのパス
+        image = Image.open(dir+"save_run.png").resize((90, 135))  # 画像ファイルのパス
         self.save_run = ImageTk.PhotoImage(image)
         
     def start_saving(self):
@@ -57,7 +57,7 @@ class CSVLoggerApp:
 
     def save_csv(self, filename):
         self.status_label = tk.Label(self.csv_frame, image=self.save_run,borderwidth=0,highlightthickness=0)
-        self.status_label.place(x=480, y=50)
+        self.status_label.place(x=280, y=110)
         print(f"test:")
         with open("output_file/"+filename + "_location_a.csv", mode='a', newline='') as file_a, \
             open("output_file/"+filename + "_location_b.csv", mode='a', newline='') as file_b:
@@ -95,7 +95,7 @@ class CSVLoggerApp:
     def complete_save(self):
         top = Toplevel()
         top.title("画像UI")
-        top.geometry("409x144+450+600")
+        top.geometry("409x144+100+600")
         top.resizable(False, False)
         top.overrideredirect(True)
         # 背景画像
