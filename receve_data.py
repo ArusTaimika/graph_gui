@@ -3,12 +3,11 @@ import queue
 from collections import deque
 
 class ReceveData:
-    def __init__(self,port):
+    def __init__(self,port,data_pieces, time_pieces):
         ip = "0.0.0.0"
-        data_pieces = 18
         self.queue = queue.Queue()
         self.csvsave_queue = deque(maxlen=10)
-        self.udp_connect = Udp_connect(ip, port, data_pieces)
+        self.udp_connect = Udp_connect(ip, port, data_pieces,time_pieces)
         self.timeout_flag = False
         
     def receive_data(self,location):

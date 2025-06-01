@@ -49,13 +49,13 @@ class DigitalClockApp_Text:
     def __init__(self, canvas):
         self.canvas = canvas
         # 背景画像の読み込み
-        bg_image = Image.open("image_folder/"+"clock_background.png").resize((525, 235))# パスは必要に応じて調整
+        bg_image = Image.open("image_folder/"+"clock_background.png").resize((477, 214))# パスは必要に応じて調整
         self.bg_photo = ImageTk.PhotoImage(bg_image)
         self.canvas.create_image(0, 0, anchor=tk.NW, image=self.bg_photo)
         
-        self.time_h_text = self.canvas.create_text(140, 144, text="", font=("HGPゴシックE", 70,), fill="gold2") #Bahanschrift SemiBold Condensed
-        self.time_m_text = self.canvas.create_text(278, 144, text="", font=("HGPゴシックE", 70), fill="gold2") #Bahanschrift SemiBold Condensed
-        self.time_s_text = self.canvas.create_text(408, 142, text="", font=("HGPゴシックE", 70), fill="gold2") #Bahanschrift SemiBold Condensed
+        self.time_h_text = self.canvas.create_text(132, 133, text="", font=("HGPゴシックE", 65), fill="gold2") #Bahanschrift SemiBold Condensed
+        self.time_m_text = self.canvas.create_text(252, 133, text="", font=("HGPゴシックE", 65), fill="gold2") #Bahanschrift SemiBold Condensed
+        self.time_s_text = self.canvas.create_text(370, 133, text="", font=("HGPゴシックE", 65), fill="gold2") #Bahanschrift SemiBold Condensed
 
         self.ntp_time = self.get_ntp_time()
         self.start_timestamp = time.time()

@@ -132,24 +132,23 @@ class MakeleftWindow():
             ,"copy_1":ImageTk.PhotoImage(copy_1_img)
             ,"copy_2":ImageTk.PhotoImage(copy_2_img)}
         
-        self.robot_text = {"location_a":self.fig_canvas["location_a"].create_text(114, 92, text="", font=("Bahnschrift SemiBold Condensed", 18), fill="goldenrod2", anchor='nw'),
-                           "location_b":self.fig_canvas["location_b"].create_text(114, 92, text="", font=("Bahnschrift SemiBold Condensed", 18), fill="goldenrod2", anchor='nw')}
+        self.robot_text = {"location_a":self.fig_canvas["location_a"].create_text(114, 88, text="", font=("Bahnschrift SemiBold Condensed", 18), fill="goldenrod2", anchor='nw'),
+                           "location_b":self.fig_canvas["location_b"].create_text(114, 88, text="", font=("Bahnschrift SemiBold Condensed", 18), fill="goldenrod2", anchor='nw')}
         #self.robot_text = self.fig_canvas["location_b"].create_text(104, 92, text="MASTER", font=("HGゴシックE", 13,"bold"), fill="goldenrod2", anchor='nw')
-        
         self.push_key = {"location_a":"master", "location_b":"master"}
+        self.location_text = {"location_a":None, "location_b":None}
         for loc in ["location_a", "location_b"]:
             self.fig_canvas[loc].create_image(10, 10, image=self.target_location_img, anchor='nw')
-            self.fig_canvas[loc].create_image(75, 60, image=self.master_posvelo_img, anchor='nw')        
+            self.fig_canvas[loc].create_image(75, 60, image=self.master_posvelo_img, anchor='nw') 
+            self.location_text[loc] = self.fig_canvas[loc].create_text(415, 16, text="A", font=("Bahnschrift SemiBold Condensed", 25,), fill="goldenrod2", anchor='nw')
     
-    def make_target_location(self,location):
+    def update_target_location(self,n,targetname):
         # Labelに画像を設定
-        if location == "location_a":
-            targetname = "A"
-        elif location == "location_b":
-            targetname = "B"
+        if n == 0:
+            loc = "location_a"
         else:
-            targetname = "C"
-        self.Location_a_text = self.fig_canvas[location].create_text(415, 16, text=targetname, font=("Bahnschrift SemiBold Condensed", 25,), fill="goldenrod2", anchor='nw')
+            loc = "location_b"       
+        self.fig_canvas[loc].itemconfig(self.location_text[loc], text=targetname)
         
     def make_noteobok(self):
         # スタイル設定
